@@ -6,12 +6,12 @@ FastAPI + HTMX + Tailwind CSS
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
 import uvicorn
 
 app = FastAPI(
     title="The Standard Company",
-    description="Software for problems that deserve solutions.",
+    description="Software for problems worth solving.",
     version="1.0.0"
 )
 
@@ -20,6 +20,11 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Templates
 templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return FileResponse("static/favicon.png", media_type="image/png")
 
 
 @app.get("/", response_class=HTMLResponse)
